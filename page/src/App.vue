@@ -1,32 +1,35 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <el-button @click="show = !show">Click Me</el-button>
+
+    <div style="display: flex; margin-top: 20px; height: 100px;">
+      <transition name="el-fade-in-linear">
+        <div v-show="show" class="transition-box">.el-fade-in-linear</div>
+      </transition>
+      <transition name="el-fade-in">
+        <div v-show="show" class="transition-box">.el-fade-in</div>
+      </transition>
     </div>
-    <router-view/>
   </div>
 </template>
-
+<script>
+export default {
+  data: () => ({
+    show: true
+  })
+}
+</script>
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.transition-box {
+  margin-bottom: 10px;
+  width: 200px;
+  height: 100px;
+  border-radius: 4px;
+  background-color: #409EFF;
   text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+  color: #fff;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  margin-right: 20px;
 }
 </style>
