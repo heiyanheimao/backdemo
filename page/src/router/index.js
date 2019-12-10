@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from './routers/login.js'
-
+import Test from './routers/test.js'
 Vue.use(VueRouter)
 const routes = [
   {
@@ -9,7 +9,8 @@ const routes = [
     path: '/',
     redirect: '/login'
   },
-  Login
+  Login,
+  Test
 ]
 
 const router = new VueRouter({
