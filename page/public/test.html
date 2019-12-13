@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <button @click="btnClick">测试接口重复提交</button>
+  </div>
+</body>
+<script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+<script src="/static/js/md5.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/vue.min.js"></script>
+<script>
+  let objectSort = (data) => {
+    let newSort = {}
+    Object.keys(data).sort().map(value => {
+      newSort[value] = data[value]
+    })
+    return newSort
+  }
+  let nonceStr = (len) => {
+    let str = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM'
+    let outStr = ''
+    for (let i = 0; i < len; i++) {
+      outStr = outStr + str[parseInt(Math.random() * 52)]
+    }
+    return outStr
+  }
+  new Vue({
+    data() {
+      return {
+        counter: true,
+        $: {}
+      }
+    },
+    methods: {
+      btnClick() {
+        if (this.counter == true) {
+          this.counter = false
+          let timestamp = Date.parse(new Date()) / 1000 + '' //当前时间戳
+          let nonce = nonceStr(32)
+          let data = { name: '张三', age: '28', timestamp, nonce }
+          data.sign = hex_md5(JSON.stringify(objectSort(data))).toUpperCase()
+          this.$.ajax({
+            //请求方式
+            type: "POST",
+            //请求的媒体类型
+            dataType: "JSON",
+            //请求地址
+            url: "/back/admin/test",
+            //数据，json字符串
+            data: data,
+            //请求成功
+            success: (rtn) => {
+            },
+            //请求失败，包含具体的错误信息
+            error: (e) => {
+              console.log(e.status);
+              console.log(e.responseText);
+            }
+          });
+        } else {
+
+        }
+      }
+    },
+    created() {
+      layui.use(['jquery'], () => {
+        this.$ = layui.jquery
+      })
+    },
+  }).$mount('#app')
+</script>
+
+</html>
